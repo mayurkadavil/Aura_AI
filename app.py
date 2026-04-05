@@ -39,18 +39,31 @@ def train_forecaster():
     model.fit(df, readiness)
     return model
 
+# --- BRAIN 2: RAG AI COACH (Phi-3 + FAISS) 
+import os
+
+# Define the network bridge so Docker can talk to your Mac
+OLLAMA_URL = os.getenv("OLLAMA_HOST", "http://host.docker.internal:11434")
+
 # --- BRAIN 2: RAG AI COACH (Phi-3 + FAISS) ---
 @st.cache_resource
 def initialize_knowledge_base():
     """Builds the local vector database from sports science literature."""
     docs = [
-        Document(page_content="Protocol for Severe Fatigue (Readiness < 30%): The central nervous system is compromised. Strictly avoid heavy compound lifts to prevent injury. Mandate active recovery, foam rolling, mobility work, and zone 2 cardio (max 120 bpm) for 20-30 minutes.", metadata={"category": "severe_fatigue"}),
-        Document(page_content="Protocol for Moderate Fatigue (Readiness 30% - 70%): The body is in a state of moderate fatigue. Proceed with hypertrophy work but reduce total volume by 20%. Keep RPE (Rate of Perceived Exertion) around 7. No one-rep maxes.", metadata={"category": "moderate_fatigue"}),
-        Document(page_content="Protocol for Peak Performance (Readiness > 70%): The central nervous system is primed. Protocol allows for heavy compound lifts, high intensity interval training (HIIT), and maximum effort attempts.", metadata={"category": "peak_performance"}),
+        Document(page_content="Protocol for Severe Fatigue (Readiness < 30%): The c..."),
+        Document(page_content="Protocol for Moderate Fatigue (Readiness 30% - 70%):..."),
+        Document(page_content="Protocol for Peak Performance (Readiness > 70%): The...")
     ]
-    # Pointing to your local phi3 model
-    embeddings = OllamaEmbeddings(model="phi3")
+    # Pointing to your local phi3 model via the Docker network bridge!
+    embeddings = OllamaEmbeddings(
+        model="phi3", 
+        base_url=OLLAMA_URL
+    )
     return FAISS.from_documents(docs, embeddings)
+
+# --- INITIALIZATION ---
+model = train_forecaster()
+vector_db = initialize_knowledge_base()
 
 # --- INITIALIZATION ---
 model = train_forecaster()
