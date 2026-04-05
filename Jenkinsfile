@@ -5,8 +5,9 @@ pipeline {
         IMAGE_NAME = "aura-ai-app"
         CONTAINER_NAME = "aura-ai-container"
         DOCKER_BIN = "/usr/local/bin/docker"
-        // Force Jenkins to use the exposed Mac Docker socket
         DOCKER_HOST = "unix:///var/run/docker.sock"
+        // Bypass Docker Desktop's local password manager for public images
+        DOCKER_CONFIG = "/tmp"
     }
 
     stages {
