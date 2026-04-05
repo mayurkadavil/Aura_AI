@@ -4,9 +4,9 @@ FROM python:3.10-slim
 # Set the working directory inside the container
 WORKDIR /app
 
-# Install the C++ multi-threading library required for LightGBM on Linux
+# Install the GNU C++ multi-threading library required for LightGBM on Linux
 RUN apt-get update && \
-    apt-get install -y libomp-dev && \
+    apt-get install -y libgomp1 && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy your requirements and install them
