@@ -123,3 +123,4 @@ if st.button("Generate Daily Protocol", use_container_width=True):
         response = llm.invoke(formatted_prompt)
         
         st.info(response)
+ 
