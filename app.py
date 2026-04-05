@@ -43,7 +43,7 @@ def train_forecaster():
 import os
 
 # Define the network bridge so Docker can talk to your Mac
-OLLAMA_URL = os.getenv("OLLAMA_HOST", "http://host.docker.internal:11434")
+OLLAMA_URL = os.getenv("OLLAMA_HOST", "http://192.168.0.101:11434")
 
 # --- BRAIN 2: RAG AI COACH (Phi-3 + FAISS) ---
 @st.cache_resource
@@ -124,3 +124,4 @@ if st.button("Generate Daily Protocol", use_container_width=True):
         
         st.info(response)
  
+# Build Timestamp: Sun Apr  5 19:14:16 IST 2026
