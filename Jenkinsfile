@@ -4,6 +4,8 @@ pipeline {
     environment {
         IMAGE_NAME = "aura-ai-app"
         CONTAINER_NAME = "aura-ai-container"
+        // Explicitly tell Jenkins where to find Docker on macOS
+        PATH = "/usr/local/bin:/opt/homebrew/bin:${env.PATH}"
     }
 
     stages {
